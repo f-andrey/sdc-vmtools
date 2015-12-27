@@ -20,14 +20,14 @@ setup_redhat() {
   if [[ ! -f $MDATA_GET_BIN ]]; then
      lib_smartdc_info "ERROR: File not found $MDATA_GET_BIN"
   fi
-    
+
   $MDATA_GET_BIN dummykey 2>&1 > /dev/null
   if [[ -f /etc/udev/rules.d/70-persistent-net.rules ]] ; then
     rm -f /etc/udev/rules.d/70-persistent-net.rules
   fi
-  
-  interfaces=$(ifconfig -a | grep ^eth | awk '{print $1}' | tr ":" " ")
-  
+
+  interfaces=$(ip link show | grep ^[[:alnum:]]:[[:space:]]eth | awk '{print $2}' | tr ":" " ")
+
   for i in ${interfaces[@]} ; do
 #    ifdown $i
 #    local config=/etc/sysconfig/network-scripts/ifcfg-$i
